@@ -2,7 +2,7 @@ public with sharing class OpportunityTriggerHandlerHelper {
     public void updateOppCountToAccount(Set<Id> accIds){
         List<Account> accList = new List<Account>();
 
-        for(AggregateResult ar : [SELECT COUNT(Id) oppCount, AccountId FROM Opportunity WHERE AccountId IN : accIds GROUP BY AccountId]){
+        for(AggregateResult ar : [SELECT COUNT(Id) oppCount, AccountId FROM Opportunity GROUP BY AccountId]){
             Account acc = new Account();
             acc.Id = (Id)ar.get('AccountId');
             acc.Opportunity_Count__c = (Decimal)ar.get('oppCount');
@@ -10,9 +10,9 @@ public with sharing class OpportunityTriggerHandlerHelper {
         }
 
         if(!accList.isEmpty()){
-            try{
+            try {
                 update accList;
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.debug('Error::' +e.getMessage());
             }
         }
