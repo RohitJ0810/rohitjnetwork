@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Apex Wire Demo">
+        <div class="slds-var-p-around_medium">
+            <template lwc:if={accounts.data}>
+                <template for:each={accounts.data} for:item="account">
+                    <div class="slds-box slds-box_xx-small" key={account.Id}>
+                        <strong>{account.Name}</strong>
+                        <strong>{account.Industry}</strong>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

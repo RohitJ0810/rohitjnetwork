@@ -14,4 +14,21 @@ public class AccountTriggerHandlerHelper {
             insert contactList;
         }
     }
+
+    public void updateRelatedContacts(Map<Id, Account> accMap){
+        List<Contact> contactList = new List<Contact>();
+
+        for(Contact cont : [SELECT Id, Level__c FROM Contact WHERE AccountId IN : accMap.keySet()]){
+            cont.Level__c = 'Primary';
+            contactList.add(cont);
+        }
+       
+        if(!contactList.isEmpty()){
+            try{
+                update contactList;
+            }catch(DmlException dml){
+                System.debug('Error::' +dml.getMessage()+ ' ' +dml.getStackTraceString());
+            }
+        }
+    }
 }

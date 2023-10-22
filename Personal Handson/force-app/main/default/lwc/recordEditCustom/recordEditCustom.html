@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Record Edit Custom Form">
+        <lightning-record-edit-form
+        object-api-name={objectName}
+        onsuccess={handleSuccess}
+        onsubmit={handleSubmit}>
+        <lightning-input label="Name" value={accName} onkeyup={handleChange} 
+        class="slds-var-m-bottom_x-small"
+        ></lightning-input>
+
+        <lightning-button class="slds-var-m-around_xx-small" variant="brand" type="submit" label="Save"></lightning-button>
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>
