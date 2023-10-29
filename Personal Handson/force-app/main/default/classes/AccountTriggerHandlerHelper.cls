@@ -18,8 +18,9 @@ public class AccountTriggerHandlerHelper {
     public void updateRelatedContacts(Map<Id, Account> accMap){
         List<Contact> contactList = new List<Contact>();
 
-        for(Contact cont : [SELECT Id, Level__c FROM Contact WHERE AccountId IN : accMap.keySet()]){
+        for(Contact cont : [SELECT Id, Level__c, AccountId, MailingState FROM Contact WHERE AccountId IN : accMap.keySet()]){
             cont.Level__c = 'Primary';
+            cont.MailingState = accMap.get(cont.AccountId).BillingState;
             contactList.add(cont);
         }
        

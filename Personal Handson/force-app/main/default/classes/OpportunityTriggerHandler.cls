@@ -4,4 +4,13 @@ public with sharing class OpportunityTriggerHandler {
    public void invokeUpdateOppCountToAccount(Set<Id> accIds){
         helper.updateOppCountToAccount(accIds);
    }
+
+   public void invokeCreateTask(List<Opportunity> opptList){
+        helper.createTask(opptList);
+   }
+
+   public void preventDeletion(List<Opportunity> opptList){
+     System.debug('Inside preventDeletion');
+        helper.preventOpptDeletion(opptList);
+   }
 }
