@@ -26,7 +26,7 @@ trigger OpportunityTrigger on Opportunity (before delete, after insert, after up
             }
         }
         when BEFORE_INSERT{
-            
+            System.debug('Inside before insert');
         }
     } 
 
