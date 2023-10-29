@@ -1,4 +1,4 @@
-trigger OpportunityTrigger on Opportunity (after insert, after update, after delete) {
+trigger OpportunityTrigger on Opportunity (before delete, after insert, after update, after delete) {
     OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
     Set<Id> accountIds = new Set<Id>();
 
@@ -7,6 +7,7 @@ trigger OpportunityTrigger on Opportunity (after insert, after update, after del
             for(Opportunity opp : Trigger.new){
                 accountIds.add(opp.AccountId);
             }
+            handler.invokeCreateTask(Trigger.new);
         }
         when AFTER_UPDATE{
             for(Opportunity opp : Trigger.new){
@@ -16,10 +17,16 @@ trigger OpportunityTrigger on Opportunity (after insert, after update, after del
                 }
             }
         }
+        when BEFORE_DELETE{
+            handler.preventDeletion(Trigger.old);
+        }
         when AFTER_DELETE{
             for(Opportunity opp : Trigger.old){
                 accountIds.add(opp.AccountId);
             }
+        }
+        when BEFORE_INSERT{
+            
         }
     } 
 

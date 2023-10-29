@@ -17,4 +17,37 @@ public with sharing class OpportunityTriggerHandlerHelper {
             }
         }
     }
+
+    public void createTask(List<Opportunity> oppList){
+        if(!oppList.isEmpty()){
+            List<Task> taskList = new List<Task>();
+            for(Opportunity opp : oppList){
+                Task tsk = new Task();
+                tsk.WhatId = opp.Id;
+                tsk.Priority = 'High';
+                tsk.OwnerId = UserInfo.getUserId();
+                taskList.add(tsk);
+            }
+
+            if(!taskList.isEmpty()){
+                try {
+                    insert taskList;
+                } catch (Exception e) {
+                    System.debug('Error::' +e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void preventOpptDeletion(List<Opportunity> opptList){
+        System.debug('Inside preventOpptDeletion');
+        if(!opptList.isEmpty()){
+            for(Opportunity opp : opptList){
+                if(opp.StageName == 'Prospecting'){
+                    System.debug('Inside Prospecting');
+                    opp.addError('Prospecting opportunities cannot be deleted.');
+                }
+            }
+        }
+    }
 }
