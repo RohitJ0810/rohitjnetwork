@@ -21,4 +21,24 @@ public with sharing class ContactTriggerHandlerHelper {
             }
         }
     }
+
+    public void updateContactCountToAccount(Set<Id> accIds){
+        List<Account> accList = new List<Account>();
+
+        for(AggregateResult ar : [SELECT COUNT(Id) contactCount, AccountId FROM Contact WHERE AccountId IN : accIds GROUP BY AccountId]){
+            Account acc = new Account();
+            System.debug((Id)ar.get('AccountId'));
+            acc.Id = (Id)ar.get('AccountId');
+            acc.Contact_Count__c = (Decimal)ar.get('contactCount');
+            accList.add(acc);
+        }
+
+        try {
+            if(!accList.isEmpty()){
+                update accList;
+            }
+        } catch (Exception ex) {
+            System.debug(ex);
+        }
+    }
 }

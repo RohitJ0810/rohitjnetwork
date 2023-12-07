@@ -1,9 +1,13 @@
-trigger ContactTrigger on Contact (before insert, before update) {
+trigger ContactTrigger on Contact (before insert, before update, after update, after insert, after delete) {
     ContactTriggerHandler handler = new ContactTriggerHandler();
 
     switch on Trigger.operationType{
         when BEFORE_INSERT{
-            handler.checkForDuplicates(Trigger.new);
+            handler.beforeInsert(Trigger.new);
+        }
+
+        when AFTER_INSERT{
+            handler.afterInsert(Trigger.new, Trigger.newMap);
         }
 
         when BEFORE_UPDATE{
@@ -14,7 +18,15 @@ trigger ContactTrigger on Contact (before insert, before update) {
                 }
             }
 
-            handler.checkForDuplicates(contList);
+            handler.beforeInsert(contList);
+        }
+
+        when AFTER_UPDATE{
+            handler.afterUpdate(Trigger.old, Trigger.new, Trigger.oldMap, Trigger.newMap);
+        }
+
+        when AFTER_DELETE{
+            handler.afterDelete(Trigger.old, Trigger.oldMap);
         }
     }
 }
